@@ -1,0 +1,34 @@
+name: Android CI / Oto APK Build
+
+on:
+  push:
+    branches: [ "main", "master" ] # main veya master branch'ine kod pushlandığında çalışır
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Kodu Klonla
+      uses: actions/checkout@v4
+
+    - name: Java 17 Kurulumu
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu' # Android Studio için en kararlı dağıtım
+        java-version: '17'
+        cache: 'gradle'
+
+    - name: Gradle Çalıştırma İzni Ver
+      run: chmod +x gradlew
+
+    - name: APK'yı Derle (Build)
+      run: ./gradlew assembleDebug
+
+    - name: Üretilen APK'yı GitHub'a Yükle (Artifact)
+      uses: actions/upload-artifact@v4
+      with:
+        name: yol-takip-apk
+        path: app/build/outputs/apk/debug/app-debug.apk
