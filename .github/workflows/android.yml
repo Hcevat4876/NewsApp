@@ -2,7 +2,7 @@ name: Android CI / Oto APK Build
 
 on:
   push:
-    branches: [ "main", "master" ] # main veya master branch'ine kod pushlandığında çalışır
+    branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
 
@@ -14,11 +14,11 @@ jobs:
     - name: Kodu Klonla
       uses: actions/checkout@v4
 
-    - name: Java 17 Kurulumu
+    - name: Java 11 Kurulumu (Uyumsuzluk Giderildi)
       uses: actions/setup-java@v4
       with:
-        distribution: 'zulu' # Android Studio için en kararlı dağıtım
-        java-version: '17'
+        distribution: 'zulu'
+        java-version: '11' # Gradle 7.0.2 ile sorunsuz çalışması için Java 11'e çekildi
         cache: 'gradle'
 
     - name: Gradle Çalıştırma İzni Ver
